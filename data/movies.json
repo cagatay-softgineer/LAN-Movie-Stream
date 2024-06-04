@@ -1,0 +1,15 @@
+[
+    {
+        "title": "Test Title",
+        "description": "Test Description",
+        "release_date": "2024",
+        "genres": [
+            "Comedy",
+            "Drama",
+            "Sci-Fi"
+        ],
+        "director": "Test Director",
+        "subtitles_path": "",
+        "imdb_score": ""
+    }
+]

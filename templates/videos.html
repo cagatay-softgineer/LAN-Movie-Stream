@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .videos {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 20px;
+        }
+        .video {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .video img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .video-info {
+            padding: 10px;
+        }
+        .video-title {
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+        .video-description {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button><a href="/">Home</a></button>
+        <form id="search-form" action="/videos" method="GET">
+            <input type="text" name="query" id="query" placeholder="Search videos by title" value="{{ query|default('') }}">
+            <button type="submit" id="search-button" >Search</button>
+        </form>
+            <h1>Search Results</h1>
+            <ul class="videos">
+                {% for video in videos %}
+                    {% if query is not defined or query.lower() in video.title.lower() %}
+                        <li class="video">
+                            <a href="/watch/{{ video.path }}">
+                                <img src="{{ url_for('static', filename=video.thumbnail) }}" alt="{{ video.title }}">
+                            </a>
+                            <div class="video-info">
+                                <h2 class="video-title">{{ video.title }}</h2>
+                                <p class="video-description">{{ video.description }}</p>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    </div>
+</body>
+</html>

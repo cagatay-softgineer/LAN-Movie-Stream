@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        
+        #videoContainer {
+            max-width: 960px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        #videoPlayer {
+            width: 100%;
+            display: block;
+        }
+        
+        .captions-widget {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        #subtitlesToggle {
+            margin: 10px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #subtitlesToggle:hover {
+            background-color: #0056b3;
+        }
+        
+        .movie-info {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .movie-info p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .movie-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .movie-info p:nth-child(even) {
+            color: #666;
+        }
+        /* Media query for mobile devices */
+        
+        @media only screen and (max-width: 600px) {
+            #videoContainer {
+                margin: 20px auto;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            #subtitlesToggle {
+                margin: 10px 0;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onload="getRid()">
+    <h1>{{ movie_title }}</h1>
+    <!-- Display movie title here -->
+    <div id="videoContainer">
+        <video id="videoPlayer" controls preload>
+            <source src="{{ url_for('stream_video', video_path=video_path) }}" type="video/mp4">
+            Your browser does not support the video tag.
+            {% if subtitles_path %}
+                <track label="Turkish" kind="subtitles" srclang="tr" src="{{ subtitles_path }}"/>
+            {% endif %}
+        </video>
+        
+        <div class="movie-info">
+            <h3>Description</h3>
+            <p>{{ movie_description }}</p>
+            <h3>Release Date</h3>
+            <p>{{ release_date }}</p>
+            <h3>Genres</h3>
+            <p>{{ genres }}</p>
+            <h3>Director</h3>
+            <p>{{ director }}</p>
+            <h3>IMDb Score</h3>
+            {% if imdb_score %}
+            <p> {{ imdb_score }} / 10.0</p>
+            {% else %}
+            <p>IMDb Score not found for '{{ movie_title }}'</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function getRid(){
+            var cacheUrl = window.location.pathname;
+            var baseUrl = window.location.protocol + '//' + window.location.host;
+
+            history.replaceState({}, '', baseUrl);
+        }
+    </script>
+</body>
+
+</html>
